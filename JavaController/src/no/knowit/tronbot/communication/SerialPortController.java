@@ -13,10 +13,10 @@ import java.util.Enumeration;
 public class SerialPortController implements Runnable, SerialPortEventListener {
 	/** The port we're normally going to use. */
 	private static final String PORT_NAMES[] = { "/dev/tty.usbserial-A6008lIf", // Mac
-																				// OS
-																				// X
-			"/dev/ttyUSB0", // Linux
-			"COM12", // Windows
+		// OS
+		// X
+		"/dev/ttyUSB0", // Linux
+		"COM12", // Windows
 	};
 	/** Buffered input stream from the port */
 	private InputStream input;
@@ -29,11 +29,12 @@ public class SerialPortController implements Runnable, SerialPortEventListener {
 
 	SerialPort serialPort = null;
 
-	MessageController msgController = new MessageController();
-	private volatile boolean running = true;
+	MessageController msgController;
+	private volatile boolean running = false;
 
-	public SerialPortController(int data_rate) {
-
+	public SerialPortController(MessageController messageController) {
+		this.msgController = messageController;
+		initialize();
 	}
 
 	@Override
@@ -52,14 +53,14 @@ public class SerialPortController implements Runnable, SerialPortEventListener {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void initialize() {
+	private void initialize() {
 		CommPortIdentifier portId = null;
 		Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier.getPortIdentifiers();
 
 		// iterate through, looking for the port
 		while (portEnum.hasMoreElements()) {
 			CommPortIdentifier currPortId = portEnum
-					.nextElement();
+			.nextElement();
 			for (String portName : PORT_NAMES) {
 				if (currPortId.getName().equals(portName)) {
 					portId = currPortId;
@@ -93,16 +94,9 @@ public class SerialPortController implements Runnable, SerialPortEventListener {
 		}
 	}
 
-	/**
-	 * This should be called when you stop using the port. This will prevent
-	 * port locking on platforms like Linux.
-	 */
-	public synchronized void close() {
-		running = false;
-		if (serialPort != null) {
-			serialPort.removeEventListener();
-			serialPort.close();
-		}
+
+	public void start() {
+		running = true;
 	}
 
 	private void sendMessage(Message msg) throws IOException {
@@ -128,4 +122,15 @@ public class SerialPortController implements Runnable, SerialPortEventListener {
 		// ones.
 	}
 
+	/**
+	 * This should be called when you stop using the port. This will prevent
+	 * port locking on platforms like Linux.
+	 */
+	public synchronized void close() {
+		running = false;
+		if (serialPort != null) {
+			serialPort.removeEventListener();
+			serialPort.close();
+		}
+	}
 }

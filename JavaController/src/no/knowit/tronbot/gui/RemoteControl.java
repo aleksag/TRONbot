@@ -1,49 +1,29 @@
-package tronbotGui;
+package no.knowit.tronbot.gui;
 
-import java.awt.EventQueue;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.sound.midi.ControllerEventListener;
-import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
-import tronbotController.TronbotController;
+import no.knowit.tronbot.communication.MessageController;
+import no.knowit.tronbot.communication.Payload;
 
-public class RemoteControlGui {
+public class RemoteControl {
 
 	private JFrame frame;
-	private static TronbotController controller;
+	private MessageController controller;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RemoteControlGui window = new RemoteControlGui();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		try {
-			controller = new TronbotController("/dev/ttyUSB0");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Create the application.
 	 */
-	public RemoteControlGui() {
+	public RemoteControl(MessageController messageController) {
+		this.controller = messageController;
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
@@ -63,7 +43,7 @@ public class RemoteControlGui {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				try {
-					controller.run(TronbotController.STOP);
+					controller.sendMessage(Payload.STOP);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -73,14 +53,14 @@ public class RemoteControlGui {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				try {
-					if (e.getKeyCode() == e.VK_LEFT) {
-						controller.run(TronbotController.LEFT);
-					} else if (e.getKeyCode() == e.VK_RIGHT) {
-						controller.run(TronbotController.RIGHT);
-					} else if (e.getKeyCode() == e.VK_UP) {
-						controller.run(TronbotController.FORWARD);
-					} else if (e.getKeyCode() == e.VK_DOWN) {
-						controller.run(TronbotController.BACKWARD);
+					if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+						controller.sendMessage(Payload.LEFT);
+					} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+						controller.sendMessage(Payload.RIGHT);
+					} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+						controller.sendMessage(Payload.FORWARD);
+					} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+						controller.sendMessage(Payload.BACKWARD);
 					}
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -99,8 +79,8 @@ public class RemoteControlGui {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				try {
-					controller.run(TronbotController.STOP);
-					controller.run(TronbotController.STOP);
+					controller.sendMessage(Payload.STOP);
+					controller.sendMessage(Payload.STOP);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -110,7 +90,7 @@ public class RemoteControlGui {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				try {
-					controller.run(TronbotController.FORWARD);
+					controller.sendMessage(Payload.FORWARD);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -145,8 +125,8 @@ public class RemoteControlGui {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				try {
-					controller.run(TronbotController.STOP);
-					controller.run(TronbotController.STOP);
+					controller.sendMessage(Payload.STOP);
+					controller.sendMessage(Payload.STOP);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -156,7 +136,7 @@ public class RemoteControlGui {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				try {
-					controller.run(TronbotController.BACKWARD);
+					controller.sendMessage(Payload.BACKWARD);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -191,8 +171,8 @@ public class RemoteControlGui {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				try {
-					controller.run(TronbotController.STOP);
-					controller.run(TronbotController.STOP);
+					controller.sendMessage(Payload.STOP);
+					controller.sendMessage(Payload.STOP);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -202,7 +182,7 @@ public class RemoteControlGui {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				try {
-					controller.run(TronbotController.LEFT);
+					controller.sendMessage(Payload.LEFT);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -237,8 +217,8 @@ public class RemoteControlGui {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				try {
-					controller.run(TronbotController.STOP);
-					controller.run(TronbotController.STOP);
+					controller.sendMessage(Payload.STOP);
+					controller.sendMessage(Payload.STOP);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -248,7 +228,7 @@ public class RemoteControlGui {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				try {
-					controller.run(TronbotController.RIGHT);
+					controller.sendMessage(Payload.RIGHT);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
