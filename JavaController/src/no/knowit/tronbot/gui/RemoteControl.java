@@ -80,7 +80,6 @@ public class RemoteControl {
 			public void mouseReleased(MouseEvent arg0) {
 				try {
 					controller.sendMessage(Payload.STOP);
-					controller.sendMessage(Payload.STOP);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -126,7 +125,6 @@ public class RemoteControl {
 			public void mouseReleased(MouseEvent arg0) {
 				try {
 					controller.sendMessage(Payload.STOP);
-					controller.sendMessage(Payload.STOP);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -171,7 +169,6 @@ public class RemoteControl {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				try {
-					controller.sendMessage(Payload.STOP);
 					controller.sendMessage(Payload.STOP);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

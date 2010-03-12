@@ -97,6 +97,7 @@ public class SerialPortController implements Runnable, SerialPortEventListener {
 
 	public void start() {
 		running = true;
+		new Thread(this).start();
 	}
 
 	private void sendMessage(Message msg) throws IOException {
@@ -114,6 +115,7 @@ public class SerialPortController implements Runnable, SerialPortEventListener {
 				byte chunk[] = new byte[available];
 				input.read(chunk, 0, available);
 				msgController.ackReceived(Integer.parseInt(new String(chunk)));
+				System.out.println(new String(chunk));
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}

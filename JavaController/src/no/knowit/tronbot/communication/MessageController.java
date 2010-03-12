@@ -1,20 +1,21 @@
 package no.knowit.tronbot.communication;
 
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MessageController {
-	
-	Stack<Message> outQueue = new Stack<Message>();
-	
+
+	List<Message> outQueue = new ArrayList<Message>();
+
 	volatile int nextOutId = 0;
-	
+
 	public void sendMessage(Payload payload) {
 		outQueue.add(new Message(getNextOutId(), payload));
 	}
-	
+
 	private synchronized int getNextOutId() {
 		int next = nextOutId++;
-		
+
 		if (next == Integer.MAX_VALUE) {
 			next = 0;
 			nextOutId = 0;
@@ -22,22 +23,26 @@ public class MessageController {
 		return next;
 	}
 
-	void ackReceived(int id) {
-		Message message = outQueue.peek();
-		if (message != null && message.getId() == id) {
-			outQueue.pop();
+	synchronized void ackReceived(int id) {
+		if (outQueue.isEmpty()) {
+			return;
+		}
+
+		Message message = outQueue.get(0);
+		if (message.getId() == id) {
+			outQueue.remove(0);
 		}
 	}
-	
+
 	boolean hasMessage() {
 		return !outQueue.isEmpty();
 	}
-	
-	Message getNextMessage() {
-		Message message = outQueue.peek();
-		if (message == null) {
+
+	synchronized Message getNextMessage() {
+		if (outQueue.isEmpty()) {
 			throw new NullPointerException("No message on stack.");
 		}
-		return message;
+
+		return outQueue.get(0);
 	}
 }
