@@ -115,7 +115,6 @@ public class SerialPortController implements Runnable, SerialPortEventListener {
 				byte chunk[] = new byte[available];
 				input.read(chunk, 0, available);
 				msgController.ackReceived(Integer.parseInt(new String(chunk)));
-				System.out.println(new String(chunk));
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}
