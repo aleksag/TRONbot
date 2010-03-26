@@ -3,14 +3,17 @@ package no.knowit.robot;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import no.knowit.simulator.Gui;
 
 public class Robot {
-	double speed;
+	private double speed;
 	double rotation;
 	double posx;
 	double posy;
+	Rectangle2D rect;
 	private Sonar sonar;
 	int width = 40;
 	int height = 40;
@@ -18,16 +21,16 @@ public class Robot {
 	public Robot(int x, int y) {
 		posx = x;
 		posy = y;
-		speed = 1;
-		rotation = Math.toRadians(5);
-		sonar = new Sonar(this);
+		speed = 0.5;
+		rotation = Math.toRadians(0);
 	}
 
 	public void step() {
 		//TODO: finn ut hvordan denne henger sammen med rotasjon av guiobjektet
-		posx += Math.cos(rotation) * speed;
-		posy -= Math.sin(rotation) * speed;
 		sonar.tick();
+		posx += (Math.cos((-rotation)) * speed);
+		posy -= (Math.sin((-rotation)) * speed);
+		
 	}
 
 	public void step(int num) {
@@ -37,7 +40,7 @@ public class Robot {
 	}
 
 	private void rot(int dir) {
-		rotation += dir;
+		rotation += Math.toRadians(dir);
 	}
 
 	public void rotateLeft() {
@@ -76,13 +79,23 @@ public class Robot {
 		  int wheelHeight = height/6;
 		  int offset = 3;
 		  
-		  g2d.rotate(rotation);
-		  g2d.drawRect(x-width/2, y-height/2, width, height);
+		  g2d.rotate(this.rotation, x,y);
+		  Rectangle2D rect = new Rectangle2D.Double(x-width/2, y-height/2, width, height);
+		  this.rect = rect;
+		  g2d.draw(rect);
 		  g2d.drawRect((x+width/2)-wheelWidth-offset, (y+height/2), wheelWidth, wheelHeight);
 		  g2d.drawRect((x-(width/2))+offset, (y+height/2), wheelWidth, wheelHeight);
 		  g2d.drawRect((x+width/2)-wheelWidth-offset, (y-height/2)-wheelHeight, wheelWidth, wheelHeight);
 		  g2d.drawRect((x-(width/2))+offset, (y-height/2)-wheelHeight, wheelWidth, wheelHeight);
+		  sonar.render(g);
 		  
 		  
+	}
+
+	public Rectangle2D getRect() {
+		return rect;
+	}
+	public void setSpeed(int speed){
+		this.speed = speed;
 	}
 }
