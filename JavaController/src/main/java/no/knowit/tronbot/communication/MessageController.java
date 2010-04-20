@@ -10,7 +10,15 @@ public class MessageController {
 	volatile int nextOutId = 0;
 
 	public void sendMessage(Payload payload) {
-		outQueue.add(new Message(getNextOutId(), payload));
+		outQueue.add(new Message(getNextOutId(), payload.toString()));
+	}
+	
+	public void sendMessage(String payload) {
+	    outQueue.add(new Message(getNextOutId(), payload));
+	}
+
+	public void receiveMessage(Message msg) {
+	    
 	}
 
 	private synchronized int getNextOutId() {
@@ -45,4 +53,5 @@ public class MessageController {
 
 		return outQueue.get(0);
 	}
+
 }
