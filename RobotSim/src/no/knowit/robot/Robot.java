@@ -81,13 +81,14 @@ public class Robot {
 		  
 		  g2d.rotate(this.rotation, x,y);
 		  Rectangle2D rect = new Rectangle2D.Double(x-width/2, y-height/2, width, height);
+		  sonar.render(g);
 		  this.rect = rect;
 		  g2d.draw(rect);
 		  g2d.drawRect((x+width/2)-wheelWidth-offset, (y+height/2), wheelWidth, wheelHeight);
 		  g2d.drawRect((x-(width/2))+offset, (y+height/2), wheelWidth, wheelHeight);
 		  g2d.drawRect((x+width/2)-wheelWidth-offset, (y-height/2)-wheelHeight, wheelWidth, wheelHeight);
 		  g2d.drawRect((x-(width/2))+offset, (y-height/2)-wheelHeight, wheelWidth, wheelHeight);
-		  sonar.render(g);
+		  
 		  
 		  
 	}
