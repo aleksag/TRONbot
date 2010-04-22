@@ -1,0 +1,33 @@
+
+When OK:
+Return "OK"
+When error
+
+ERP1P2
+
+
+
+Commands
+
+DigitalWrite
+
+cmd 01
+param1 0-13	digital output port
+param2 0,1 value. HIGH=1, LOW=0
+
+Examples:
+Turn ON port 13: 01130001
+Turn OFF port 12: 01120000
+
+Error
+
+ER00 Unknown command
+P1 requested command
+
+ER01 Illegal argument
+P2 (1,2) 1=param1, 2=param2
+
+
+
+
+
